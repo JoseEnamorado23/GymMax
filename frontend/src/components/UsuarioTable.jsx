@@ -1,7 +1,7 @@
-import { UsersIcon, CartIcon, EditIcon, DeactivateIcon, WhatsAppIcon } from "./Icons";
+import { UsersIcon, CartIcon, EditIcon, DeactivateIcon, WhatsAppIcon, CheckIcon, CalendarIcon } from "./Icons";
 import "./UsuarioTable.css";
 
-export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVenderPlan, cargando }) {
+export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onActivar, onVenderPlan, onNuevoUsuario, onVerAsistencia, cargando }) {
   if (cargando) {
     return (
       <div className="table-container glass-panel">
@@ -21,7 +21,10 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
             <UsersIcon size={48} />
           </span>
           <h3>Sin usuarios registrados</h3>
-          <p>Usa el formulario de arriba para registrar tu primer usuario.</p>
+          <p style={{ marginBottom: "1.5rem" }}>Comienza registrando tu primer usuario en el sistema.</p>
+          <button className="btn-primary" onClick={onNuevoUsuario} id="btn-nuevo-usuario-empty">
+            + Registrar Usuario
+          </button>
         </div>
       </div>
     );
@@ -34,6 +37,14 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
           Usuarios Registrados
           <span className="badge">{usuarios.length}</span>
         </h2>
+        <button 
+          className="btn-primary" 
+          onClick={onNuevoUsuario} 
+          id="btn-nuevo-usuario"
+          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+        >
+          + Registrar Usuario
+        </button>
       </div>
 
       <div className="table-scroll">
@@ -50,7 +61,7 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
             </tr>
           </thead>
           <tbody>
-            {usuarios.map((u, i) => (
+            {Array.isArray(usuarios) && usuarios.map((u, i) => (
               <tr key={u.id} className="table-row" style={{ animationDelay: `${i * 0.05}s` }}>
                 <td className="td-name">
                   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
@@ -112,6 +123,14 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
                     <CartIcon size={16} color="#10b981" />
                   </button>
                   <button
+                    className="btn-icon btn-calendar"
+                    onClick={() => onVerAsistencia(u)}
+                    title="Historial de Asistencias"
+                    id={`btn-calendar-${u.id}`}
+                  >
+                    <CalendarIcon size={16} color="#3b82f6" />
+                  </button>
+                  <button
                     className="btn-icon btn-edit"
                     onClick={() => onEditar(u)}
                     title="Editar"
@@ -119,14 +138,33 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
                   >
                     <EditIcon size={16} color="#2563eb" />
                   </button>
-                  {u.activo && (
+                  <a
+                    href={`https://wa.me/57${(u.contacto_whatsapp || u.telefono).replace(/\D/g, '')}?text=${encodeURIComponent("¡Hola " + u.nombre_completo + "! Este es tu acceso directo a la App de GymMax: " + window.location.origin + "/?token=" + u.token_app)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-icon"
+                    title="Enviar App por WhatsApp"
+                    style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", textDecoration: "none" }}
+                  >
+                    <WhatsAppIcon size={16} color="#25D366" />
+                  </a>
+                  {u.activo ? (
                     <button
                       className="btn-icon btn-deactivate"
-                      onClick={() => onDesactivar(u.id)}
+                      onClick={() => onDesactivar(u)}
                       title="Desactivar"
                       id={`btn-deactivate-${u.id}`}
                     >
                       <DeactivateIcon size={16} color="#dc2626" />
+                    </button>
+                  ) : (
+                    <button
+                      className="btn-icon btn-activate"
+                      onClick={() => onActivar(u)}
+                      title="Activar"
+                      id={`btn-activate-${u.id}`}
+                    >
+                      <CheckIcon size={16} color="#16a34a" strokeWidth={2.5} />
                     </button>
                   )}
                 </td>

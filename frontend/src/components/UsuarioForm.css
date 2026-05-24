@@ -113,3 +113,33 @@
     width: 100%;
   }
 }
+
+/* Estilos de formulario limpios para cuando se renderiza dentro del modal */
+.usuario-form-clean {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.usuario-form-clean .form-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 576px) {
+  .usuario-form-clean .form-actions {
+    flex-direction: column-reverse; /* Cancelar abajo, Enviar arriba */
+    width: 100%;
+  }
+  .usuario-form-clean .form-actions button {
+    width: 100%;
+  }
+}

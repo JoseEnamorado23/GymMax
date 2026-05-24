@@ -1,7 +1,7 @@
 import { ClipboardIcon, DeactivateIcon, CheckIcon } from "./Icons";
 import "./PlanTable.css";
 
-export default function PlanTable({ planes, cargando, onToggleActivo }) {
+export default function PlanTable({ planes, cargando, onToggleActivo, onNuevoPlan }) {
   if (cargando) {
     return (
       <div className="table-container glass-panel">
@@ -21,7 +21,10 @@ export default function PlanTable({ planes, cargando, onToggleActivo }) {
             <ClipboardIcon size={48} />
           </span>
           <h3>Sin planes creados</h3>
-          <p>Usa el formulario de arriba para crear tu primer plan.</p>
+          <p style={{ marginBottom: "1.5rem" }}>Comienza creando tu primer plan en el catálogo.</p>
+          <button className="btn-primary" onClick={onNuevoPlan} id="btn-nuevo-plan-empty">
+            + Nuevo Plan
+          </button>
         </div>
       </div>
     );
@@ -52,10 +55,18 @@ export default function PlanTable({ planes, cargando, onToggleActivo }) {
           Planes Disponibles
           <span className="badge badge-amber">{planes.length}</span>
         </h2>
+        <button 
+          className="btn-primary" 
+          onClick={onNuevoPlan} 
+          id="btn-nuevo-plan"
+          style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}
+        >
+          + Nuevo Plan
+        </button>
       </div>
 
       <div className="plan-cards">
-        {planes.map((plan, i) => (
+        {Array.isArray(planes) && planes.map((plan, i) => (
           <div
             key={plan.id}
             className="plan-card"
@@ -101,7 +112,7 @@ export default function PlanTable({ planes, cargando, onToggleActivo }) {
               </span>
               <button 
                 className="btn-icon" 
-                onClick={() => onToggleActivo(plan.id)}
+                onClick={() => onToggleActivo(plan)}
                 title={plan.activo ? "Desactivar Plan" : "Activar Plan"}
               >
                 {plan.activo ? (

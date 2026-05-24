@@ -56,3 +56,58 @@ def desactivar_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
     if not db_usuario:
         raise HTTPException(status_code=404, detail="Usuario no encontrado.")
     return db_usuario
+
+
+@router.put("/{usuario_id}/activar", response_model=UsuarioResponse)
+def activar_usuario(usuario_id: UUID, db: Session = Depends(get_db)):
+    """Activa un usuario previamente desactivado (soft delete revertido)."""
+    db_usuario = crud_usuario.reactivar_usuario(db, usuario_id)
+    if not db_usuario:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado.")
+    return db_usuario
+
+from app.schemas.usuario import UsuarioSocioResponse
+from datetime import datetime, timezone
+
+@router.get("/token/{token_app}", response_model=UsuarioSocioResponse)
+def obtener_perfil_socio(token_app: str, db: Session = Depends(get_db)):
+    """Obtiene datos públicos del socio usando su magic link token."""
+    from app.models.usuario import Usuario
+    from app.models.suscripcion import Suscripcion
+    from app.models.plan import Plan
+
+    usuario = db.query(Usuario).filter(Usuario.token_app == token_app).first()
+    if not usuario:
+        raise HTTPException(status_code=404, detail="Token inválido o expirado.")
+
+    response = {
+        "nombre_completo": usuario.nombre_completo,
+        "documento_identidad": usuario.documento_identidad,
+        "foto_perfil": usuario.foto_perfil,
+        "activo": usuario.activo,
+        "suscripcion_activa": None,
+        "dias_restantes": None
+    }
+
+    # Buscar última suscripción activa
+    ultima_susc = db.query(Suscripcion).join(Plan).filter(
+        Suscripcion.usuario_id == usuario.id,
+        Suscripcion.estado == "Activa"
+    ).order_by(Suscripcion.fecha_fin.desc()).first()
+
+    if ultima_susc:
+        # Calcular días restantes
+        hoy = datetime.now(timezone.utc)
+        dias_rest = (ultima_susc.fecha_fin - hoy).days
+        if dias_rest < 0:
+            dias_rest = 0
+
+        response["suscripcion_activa"] = {
+            "plan_nombre": ultima_susc.plan.nombre,
+            "fecha_inicio": ultima_susc.fecha_inicio,
+            "fecha_fin": ultima_susc.fecha_fin,
+            "estado": ultima_susc.estado
+        }
+        response["dias_restantes"] = dias_rest
+
+    return response

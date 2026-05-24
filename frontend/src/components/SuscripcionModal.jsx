@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { WalletIcon, CloseIcon } from "./Icons";
 import "./SuscripcionModal.css";
 
-export default function SuscripcionModal({ usuario, planes, onClose, onSubmit }) {
+export default function SuscripcionModal({ usuario, planes, entrenadores = [], onClose, onSubmit }) {
   const [planId, setPlanId] = useState("");
   const [metodoPago, setMetodoPago] = useState("Efectivo");
   const [monto, setMonto] = useState("");
+  const [entrenadorId, setEntrenadorId] = useState("");
 
   // Cada vez que cambia el plan seleccionado, autocompletamos el monto
   useEffect(() => {
@@ -30,7 +31,8 @@ export default function SuscripcionModal({ usuario, planes, onClose, onSubmit })
       usuario_id: usuario.id,
       plan_id: planId,
       metodo_pago: metodoPago,
-      monto: parseFloat(monto)
+      monto: parseFloat(monto),
+      entrenador_id: entrenadorId || null
     });
   }
 
@@ -85,6 +87,22 @@ export default function SuscripcionModal({ usuario, planes, onClose, onSubmit })
 
             {planSeleccionado && (
               <>
+                <div className="form-group animate-slide-in">
+                  <label htmlFor="select-entrenador">¿Incluye Entrenador Personal? (Opcional)</label>
+                  <select
+                    id="select-entrenador"
+                    value={entrenadorId}
+                    onChange={(e) => setEntrenadorId(e.target.value)}
+                  >
+                    <option value="">-- Sin entrenador --</option>
+                    {entrenadores.map(e => (
+                      <option key={e.id} value={e.id}>
+                        {e.nombre} ({e.porcentaje}%)
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <div className="form-group animate-slide-in">
                   <label htmlFor="select-metodo">Método de Pago</label>
                   <select

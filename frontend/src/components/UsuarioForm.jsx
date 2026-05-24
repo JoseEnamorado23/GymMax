@@ -7,10 +7,9 @@ const emptyForm = {
   telefono: "",
   foto_perfil: "",
   contacto_whatsapp: "",
-  plan_id: "",
 };
 
-export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) {
+export default function UsuarioForm({ onSubmit, editando, onCancelar }) {
   const [form, setForm] = useState(emptyForm);
 
   useEffect(() => {
@@ -21,7 +20,6 @@ export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) 
         telefono: editando.telefono,
         foto_perfil: editando.foto_perfil || "",
         contacto_whatsapp: editando.contacto_whatsapp || "",
-        plan_id: editando.plan_id || "",
       });
     } else {
       setForm(emptyForm);
@@ -35,15 +33,12 @@ export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) 
   function handleSubmit(e) {
     e.preventDefault();
     const submitData = { ...form };
-    if (!submitData.plan_id) submitData.plan_id = null;
     onSubmit(submitData);
     if (!editando) setForm(emptyForm);
   }
 
   return (
-    <form className="usuario-form glass-panel" onSubmit={handleSubmit} id="usuario-form">
-      <h2>{editando ? "Editar Usuario" : "Registrar Nuevo Usuario"}</h2>
-
+    <form className="usuario-form-clean" onSubmit={handleSubmit} id="usuario-form">
       <div className="form-grid">
         <div className="form-group">
           <label htmlFor="nombre_completo">Nombre Completo</label>
@@ -109,34 +104,15 @@ export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) 
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="plan_id">Plan de Gimnasio</label>
-          <select
-            id="plan_id"
-            name="plan_id"
-            value={form.plan_id}
-            onChange={handleChange}
-            className="form-select"
-          >
-            <option value="">-- Sin Plan (Pago por día / Ninguno) --</option>
-            {planes && planes.map(plan => (
-              <option key={plan.id} value={plan.id}>
-                {plan.nombre} - ${plan.precio.toLocaleString("es-CO")}
-              </option>
-            ))}
-          </select>
-        </div>
       </div>
 
       <div className="form-actions">
+        <button type="button" className="btn-secondary" onClick={onCancelar} id="btn-cancelar-edicion">
+          Cancelar
+        </button>
         <button type="submit" className="btn-primary" id="btn-submit-usuario">
           {editando ? "Guardar Cambios" : "Registrar Usuario"}
         </button>
-        {editando && (
-          <button type="button" className="btn-secondary" onClick={onCancelar} id="btn-cancelar-edicion">
-            Cancelar
-          </button>
-        )}
       </div>
     </form>
   );

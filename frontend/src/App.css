@@ -327,3 +327,57 @@
     text-align: center;
   }
 }
+
+/* --- Conmutador de Roles en Sidebar --- */
+.role-switch-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  background-color: var(--bg-color);
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.role-switch-label {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+}
+
+.role-switch-buttons {
+  display: flex;
+  gap: 0.35rem;
+  background-color: var(--surface-color);
+  padding: 0.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.btn-role-switch {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 0.45rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  outline: none;
+  text-align: center;
+}
+
+.btn-role-switch.active {
+  background-color: var(--accent-color);
+  color: var(--accent-text);
+  box-shadow: 0 2px 8px rgba(163, 230, 53, 0.25);
+}
+
+.btn-role-switch:not(.active):hover {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+

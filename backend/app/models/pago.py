@@ -13,6 +13,7 @@ class Pago(Base):
     usuario_id = Column(UUID(as_uuid=True), ForeignKey("usuarios.id", ondelete="CASCADE"), nullable=False)
     suscripcion_id = Column(UUID(as_uuid=True), ForeignKey("suscripciones.id", ondelete="SET NULL"), nullable=True)
     plan_id = Column(UUID(as_uuid=True), ForeignKey("planes.id"), nullable=False)
+    entrenador_id = Column(UUID(as_uuid=True), ForeignKey("entrenadores.id", ondelete="SET NULL"), nullable=True)
     
     monto = Column(Float, nullable=False)
     metodo_pago = Column(String, nullable=False)  # "Efectivo" o "Nequi"
@@ -22,3 +23,4 @@ class Pago(Base):
     usuario = relationship("Usuario", lazy="joined")
     plan = relationship("Plan", lazy="joined")
     suscripcion = relationship("Suscripcion")
+    entrenador = relationship("Entrenador")

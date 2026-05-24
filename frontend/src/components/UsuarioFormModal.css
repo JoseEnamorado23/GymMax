@@ -1,0 +1,46 @@
+.form-modal-content {
+  max-width: 640px;
+  width: 95%;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.2);
+}
+
+.form-modal-body {
+  padding: 1.5rem 2rem 2rem;
+}
+
+/* Animations */
+.animate-fade-in {
+  animation: fadeInModal 0.25s ease-out forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUpModal 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUpModal {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 576px) {
+  .form-modal-body {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+}

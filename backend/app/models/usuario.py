@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid
+import secrets
 from datetime import datetime, timezone
 from app.db.database import Base
 
@@ -18,6 +19,7 @@ class Usuario(Base):
     plan_id = Column(UUID(as_uuid=True), ForeignKey("planes.id"), nullable=True)
     fecha_registro = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     activo = Column(Boolean, default=True)
+    token_app = Column(String, unique=True, index=True, default=lambda: secrets.token_urlsafe(16))
 
     # Relación para acceder al plan directamente: usuario.plan
     plan = relationship("Plan", backref="usuarios", lazy="joined")

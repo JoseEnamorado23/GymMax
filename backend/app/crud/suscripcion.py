@@ -38,7 +38,8 @@ def crear_suscripcion(db: Session, suscripcion: SuscripcionCreate):
         suscripcion_id=db_suscripcion.id,
         plan_id=suscripcion.plan_id,
         monto=monto_pago,
-        metodo_pago=suscripcion.metodo_pago
+        metodo_pago=suscripcion.metodo_pago,
+        entrenador_id=suscripcion.entrenador_id
     )
     db.add(db_pago)
     
@@ -51,4 +52,9 @@ def crear_suscripcion(db: Session, suscripcion: SuscripcionCreate):
     db.commit()
     db.refresh(db_suscripcion)
     return db_suscripcion
+
+
+def obtener_ultima_suscripcion(db: Session, usuario_id):
+    return db.query(Suscripcion).filter(Suscripcion.usuario_id == usuario_id).order_by(Suscripcion.fecha_fin.desc()).first()
+
 

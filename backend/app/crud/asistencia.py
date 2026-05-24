@@ -1,3 +1,4 @@
+from uuid import UUID
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
 from fastapi import HTTPException
@@ -36,5 +37,19 @@ def registrar_ingreso(db: Session, asistencia: AsistenciaCreate):
     }
 
 
-def obtener_asistencias(db: Session, limit: int = 50, skip: int = 0):
-    return db.query(Asistencia).order_by(Asistencia.fecha_hora.desc()).offset(skip).limit(limit).all()
+def obtener_asistencias(
+    db: Session, 
+    usuario_id: UUID | None = None, 
+    fecha_inicio: datetime | None = None,
+    fecha_fin: datetime | None = None,
+    limit: int = 100, 
+    skip: int = 0
+):
+    query = db.query(Asistencia)
+    if usuario_id is not None:
+        query = query.filter(Asistencia.usuario_id == usuario_id)
+    if fecha_inicio is not None:
+        query = query.filter(Asistencia.fecha_hora >= fecha_inicio)
+    if fecha_fin is not None:
+        query = query.filter(Asistencia.fecha_hora <= fecha_fin)
+    return query.order_by(Asistencia.fecha_hora.desc()).offset(skip).limit(limit).all()

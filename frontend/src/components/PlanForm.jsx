@@ -44,9 +44,7 @@ export default function PlanForm({ onSubmit, editando, onCancelar }) {
   }
 
   return (
-    <form className="plan-form glass-panel" onSubmit={handleSubmit} id="plan-form">
-      <h2>{editando ? "✏️ Editar Plan" : "📋 Crear Nuevo Plan"}</h2>
-
+    <form className="plan-form" onSubmit={handleSubmit} id="plan-form">
       <div className="form-grid">
         <div className="form-group">
           <label htmlFor="plan-nombre">Nombre del Plan</label>
@@ -118,14 +116,12 @@ export default function PlanForm({ onSubmit, editando, onCancelar }) {
       </div>
 
       <div className="form-actions">
+        <button type="button" className="btn-secondary" onClick={onCancelar} id="btn-cancelar-plan">
+          Cancelar
+        </button>
         <button type="submit" className="btn-primary" id="btn-submit-plan">
           {editando ? "Guardar Cambios" : "Crear Plan"}
         </button>
-        {editando && (
-          <button type="button" className="btn-secondary" onClick={onCancelar} id="btn-cancelar-plan">
-            Cancelar
-          </button>
-        )}
       </div>
     </form>
   );

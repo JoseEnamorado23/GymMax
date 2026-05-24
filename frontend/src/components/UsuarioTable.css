@@ -159,10 +159,22 @@ code {
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
 }
 
+.btn-calendar:hover {
+  border-color: #3b82f6 !important;
+  background-color: #eff6ff !important;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
 .btn-deactivate:hover {
   border-color: #ef4444 !important;
   background-color: #fef2f2 !important;
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+}
+
+.btn-activate:hover {
+  border-color: #16a34a !important;
+  background-color: #f0fdf4 !important;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.15);
 }
 
 /* --- Cargas y Vacíos --- */

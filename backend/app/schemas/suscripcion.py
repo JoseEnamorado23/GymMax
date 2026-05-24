@@ -8,6 +8,7 @@ class SuscripcionCreate(BaseModel):
     plan_id: UUID
     metodo_pago: str  # "Efectivo" o "Nequi"
     monto: Optional[float] = None  # Si es nulo, usará el precio del plan
+    entrenador_id: Optional[UUID] = None
 
 
 class SuscripcionResponse(BaseModel):

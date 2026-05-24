@@ -1,29 +1,12 @@
-import { useState, useEffect } from "react";
-import { CameraIcon, CheckIcon, DeactivateIcon, ClockIcon } from "./Icons";
+import { useState } from "react";
+import { CameraIcon, CheckIcon, DeactivateIcon } from "./Icons";
 import "./AsistenciaScanner.css";
-import { marcarAsistencia, fetchAsistencias } from "../services/api";
+import { marcarAsistencia } from "../services/api";
 
 export default function AsistenciaScanner({ usuarios, mostrarToast }) {
   const [selectedUsuarioId, setSelectedUsuarioId] = useState("");
   const [scanning, setScanning] = useState(false);
   const [lastResult, setLastResult] = useState(null);
-  const [historial, setHistorial] = useState([]);
-  const [cargandoHistorial, setCargandoHistorial] = useState(true);
-
-  async function cargarHistorial() {
-    try {
-      const data = await fetchAsistencias();
-      setHistorial(data);
-    } catch (err) {
-      console.error("Error al cargar historial de asistencias:", err);
-    } finally {
-      setCargandoHistorial(false);
-    }
-  }
-
-  useEffect(() => {
-    cargarHistorial();
-  }, []);
 
   async function handleScan(e) {
     e.preventDefault();
@@ -46,9 +29,6 @@ export default function AsistenciaScanner({ usuarios, mostrarToast }) {
       });
       mostrarToast("Asistencia registrada", "success");
       
-      // Recargamos el historial en tiempo real
-      cargarHistorial();
-      
     } catch (err) {
       // Acceso denegado
       setLastResult({
@@ -65,7 +45,7 @@ export default function AsistenciaScanner({ usuarios, mostrarToast }) {
 
   return (
     <div className="recepcion-layout" id="recepcion-layout">
-      {/* Columna Izquierda: Escáner QR */}
+      {/* Escáner QR (Única columna ahora) */}
       <div className="scanner-container glass-panel" id="asistencia-scanner">
         <div className="scanner-header">
           <h2>
@@ -124,70 +104,6 @@ export default function AsistenciaScanner({ usuarios, mostrarToast }) {
           )}
         </div>
       </div>
-
-      {/* Columna Derecha: Historial de Accesos Recientes */}
-      <div className="historial-container glass-panel" id="historial-asistencias">
-        <div className="historial-header">
-          <h2>
-            <span style={{ display: "inline-flex", verticalAlign: "middle", marginRight: "8px" }}>
-              <ClockIcon size={24} color="#3b82f6" />
-            </span>
-            Historial de Accesos Recientes
-          </h2>
-          <p>Control de ingresos en tiempo real con fecha y hora.</p>
-        </div>
-
-        <div className="historial-body">
-          {cargandoHistorial ? (
-            <div className="cargando-spinner">Cargando historial...</div>
-          ) : historial.length === 0 ? (
-            <p className="no-data">No se han registrado ingresos aún hoy.</p>
-          ) : (
-            <div className="historial-list">
-              {historial.map((asist) => {
-                const fecha = new Date(asist.fecha_hora);
-                const horaStr = fecha.toLocaleTimeString("es-ES", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                });
-                const fechaStr = fecha.toLocaleDateString("es-ES", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                });
-
-                return (
-                  <div className="historial-card entry-animate" key={asist.id}>
-                    <div className="historial-card-avatar">
-                      {asist.usuario?.foto_perfil ? (
-                        <img src={asist.usuario.foto_perfil} alt={asist.usuario.nombre_completo} className="avatar-img" />
-                      ) : (
-                        <div className="avatar-placeholder">
-                          {asist.usuario?.nombre_completo?.charAt(0).toUpperCase() || "U"}
-                        </div>
-                      )}
-                    </div>
-                    <div className="historial-card-info">
-                      <h4 className="historial-card-name">
-                        {asist.usuario?.nombre_completo || "Usuario Desconocido"}
-                      </h4>
-                      <p className="historial-card-doc">
-                        Doc: {asist.usuario?.documento_identidad || "N/A"}
-                      </p>
-                    </div>
-                    <div className="historial-card-time">
-                      <span className="time-badge">{horaStr}</span>
-                      <span className="date-badge">{fechaStr}</span>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
-

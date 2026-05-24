@@ -38,6 +38,21 @@ class UsuarioResponse(BaseModel):
     plan: Optional[PlanResponse] = None
     fecha_registro: datetime
     activo: bool
+    token_app: Optional[str] = None
 
     # Permite que Pydantic lea el modelo de SQLAlchemy
     model_config = ConfigDict(from_attributes=True)
+
+class SuscripcionBasica(BaseModel):
+    plan_nombre: str
+    fecha_inicio: datetime
+    fecha_fin: datetime
+    estado: str
+
+class UsuarioSocioResponse(BaseModel):
+    nombre_completo: str
+    documento_identidad: str
+    foto_perfil: Optional[str] = None
+    activo: bool
+    suscripcion_activa: Optional[SuscripcionBasica] = None
+    dias_restantes: Optional[int] = None
