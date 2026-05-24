@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { CameraIcon, CheckIcon, DeactivateIcon, ClockIcon } from "./Icons";
 import "./AsistenciaScanner.css";
 import { marcarAsistencia, fetchAsistencias } from "../services/api";
 
@@ -67,7 +68,12 @@ export default function AsistenciaScanner({ usuarios, mostrarToast }) {
       {/* Columna Izquierda: Escáner QR */}
       <div className="scanner-container glass-panel" id="asistencia-scanner">
         <div className="scanner-header">
-          <h2>📷 Simulador de Escáner QR</h2>
+          <h2>
+            <span style={{ display: "inline-flex", verticalAlign: "middle", marginRight: "8px" }}>
+              <CameraIcon size={24} color="var(--accent-hover)" />
+            </span>
+            Simulador de Escáner QR
+          </h2>
           <p>En la vida real esto sería automático con la cámara, aquí seleccionamos al usuario.</p>
         </div>
 
@@ -102,8 +108,12 @@ export default function AsistenciaScanner({ usuarios, mostrarToast }) {
 
           {lastResult && (
             <div className={`scan-result ${lastResult.success ? 'result-success' : 'result-error'}`}>
-              <div className="result-icon">
-                {lastResult.success ? "✅" : "⛔"}
+              <div className="result-icon" style={{ display: "inline-flex", alignItems: "center" }}>
+                {lastResult.success ? (
+                  <CheckIcon size={48} color="#047857" />
+                ) : (
+                  <DeactivateIcon size={48} color="#b91c1c" />
+                )}
               </div>
               <div className="result-info">
                 <h3>{lastResult.success ? "ACCESO PERMITIDO" : "ACCESO DENEGADO"}</h3>
@@ -118,7 +128,12 @@ export default function AsistenciaScanner({ usuarios, mostrarToast }) {
       {/* Columna Derecha: Historial de Accesos Recientes */}
       <div className="historial-container glass-panel" id="historial-asistencias">
         <div className="historial-header">
-          <h2>🕒 Historial de Accesos Recientes</h2>
+          <h2>
+            <span style={{ display: "inline-flex", verticalAlign: "middle", marginRight: "8px" }}>
+              <ClockIcon size={24} color="#3b82f6" />
+            </span>
+            Historial de Accesos Recientes
+          </h2>
           <p>Control de ingresos en tiempo real con fecha y hora.</p>
         </div>
 

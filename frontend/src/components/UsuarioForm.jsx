@@ -116,7 +116,7 @@ export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) 
             name="plan_id"
             value={form.plan_id}
             onChange={handleChange}
-            style={{ padding: "0.75rem 1rem", borderRadius: "10px", border: "1px solid var(--border-color)", background: "rgba(15, 23, 42, 0.6)", color: "var(--text-primary)", fontSize: "0.95rem", outline: "none" }}
+            className="form-select"
           >
             <option value="">-- Sin Plan (Pago por día / Ninguno) --</option>
             {planes && planes.map(plan => (

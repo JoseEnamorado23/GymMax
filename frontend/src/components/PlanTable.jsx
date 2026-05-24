@@ -1,3 +1,4 @@
+import { ClipboardIcon, DeactivateIcon, CheckIcon } from "./Icons";
 import "./PlanTable.css";
 
 export default function PlanTable({ planes, cargando, onToggleActivo }) {
@@ -16,7 +17,9 @@ export default function PlanTable({ planes, cargando, onToggleActivo }) {
     return (
       <div className="table-container glass-panel">
         <div className="empty-state">
-          <span className="empty-icon">📋</span>
+          <span className="empty-icon">
+            <ClipboardIcon size={48} />
+          </span>
           <h3>Sin planes creados</h3>
           <p>Usa el formulario de arriba para crear tu primer plan.</p>
         </div>
@@ -60,7 +63,9 @@ export default function PlanTable({ planes, cargando, onToggleActivo }) {
             id={`plan-card-${plan.id}`}
           >
             <div className="plan-card-header">
-              <span className="plan-icon">🏷️</span>
+              <span className="plan-icon" style={{ display: "inline-flex", alignItems: "center" }}>
+                <ClipboardIcon size={20} color="var(--accent-hover)" />
+              </span>
               <h3 className="plan-nombre">{plan.nombre}</h3>
             </div>
 
@@ -98,9 +103,12 @@ export default function PlanTable({ planes, cargando, onToggleActivo }) {
                 className="btn-icon" 
                 onClick={() => onToggleActivo(plan.id)}
                 title={plan.activo ? "Desactivar Plan" : "Activar Plan"}
-                style={{ background: "rgba(255,255,255,0.1)", color: "var(--text-primary)" }}
               >
-                {plan.activo ? "🚫" : "✅"}
+                {plan.activo ? (
+                  <DeactivateIcon size={16} color="#dc2626" />
+                ) : (
+                  <CheckIcon size={16} color="#166534" />
+                )}
               </button>
             </div>
           </div>

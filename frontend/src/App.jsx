@@ -18,6 +18,14 @@ import {
   crearSuscripcion,
   fetchPagos,
 } from "./services/api";
+import {
+  DumbbellIcon,
+  UsersIcon,
+  ClipboardIcon,
+  CameraIcon,
+  WalletIcon,
+  CalendarIcon
+} from "./components/Icons";
 import "./App.css";
 
 function App() {
@@ -156,104 +164,148 @@ function App() {
   }
 
   return (
-    <div className="app-container">
-      <header className="app-header" id="app-header">
-        <div className="logo">
-          <span className="logo-icon">💪</span>
-          <h1>Gym<span className="text-gradient">Max</span></h1>
+    <div className="dashboard-layout">
+      {/* --- Barra de Navegación Lateral (Sidebar) --- */}
+      <aside className="sidebar">
+        <div className="sidebar-brand">
+          <span className="sidebar-logo-icon">
+            <DumbbellIcon size={32} />
+          </span>
+          <div className="sidebar-logo-text">
+            <h2>Gym<span className="text-gradient-logo">Max</span></h2>
+            <p className="sidebar-subtitle">Fitness Center</p>
+          </div>
         </div>
-        <p className="subtitle">Panel de Administración</p>
-      </header>
 
-      {/* --- Navegación por Pestañas --- */}
-      <nav className="tab-nav" id="main-nav">
-        <button
-          className={`tab-btn ${seccion === "usuarios" ? "tab-active" : ""}`}
-          onClick={() => setSeccion("usuarios")}
-          id="tab-usuarios"
-        >
-          <span className="tab-icon">👥</span>
-          Usuarios
-        </button>
-        <button
-          className={`tab-btn ${seccion === "planes" ? "tab-active" : ""}`}
-          onClick={() => setSeccion("planes")}
-          id="tab-planes"
-        >
-          <span className="tab-icon">📋</span>
-          Planes
-        </button>
-        <button
-          className={`tab-btn ${seccion === "recepcion" ? "tab-active" : ""}`}
-          onClick={() => setSeccion("recepcion")}
-          id="tab-recepcion"
-        >
-          <span className="tab-icon">📷</span>
-          Recepción (QR)
-        </button>
-        <button
-          className={`tab-btn ${seccion === "finanzas" ? "tab-active" : ""}`}
-          onClick={() => setSeccion("finanzas")}
-          id="tab-finanzas"
-        >
-          <span className="tab-icon">💰</span>
-          Finanzas
-        </button>
-      </nav>
+        <nav className="sidebar-menu">
+          <button
+            className={`menu-item ${seccion === "usuarios" ? "active" : ""}`}
+            onClick={() => setSeccion("usuarios")}
+            id="tab-usuarios"
+          >
+            <span className="menu-icon">
+              <UsersIcon size={20} />
+            </span>
+            <span className="menu-text">Usuarios</span>
+          </button>
+          <button
+            className={`menu-item ${seccion === "planes" ? "active" : ""}`}
+            onClick={() => setSeccion("planes")}
+            id="tab-planes"
+          >
+            <span className="menu-icon">
+              <ClipboardIcon size={20} />
+            </span>
+            <span className="menu-text">Planes</span>
+          </button>
+          <button
+            className={`menu-item ${seccion === "recepcion" ? "active" : ""}`}
+            onClick={() => setSeccion("recepcion")}
+            id="tab-recepcion"
+          >
+            <span className="menu-icon">
+              <CameraIcon size={20} />
+            </span>
+            <span className="menu-text">Recepción (QR)</span>
+          </button>
+          <button
+            className={`menu-item ${seccion === "finanzas" ? "active" : ""}`}
+            onClick={() => setSeccion("finanzas")}
+            id="tab-finanzas"
+          >
+            <span className="menu-icon">
+              <WalletIcon size={20} />
+            </span>
+            <span className="menu-text">Finanzas</span>
+          </button>
+        </nav>
 
-      {/* --- Contenido --- */}
-      <main>
-        {seccion === "usuarios" && (
-          <section className="section-animate" key="usuarios">
-            <UsuarioForm
-              onSubmit={editando ? handleActualizarUsuario : handleCrearUsuario}
-              editando={editando}
-              onCancelar={() => setEditando(null)}
-              planes={planes.filter(p => p.activo)} // solo planes activos
-            />
-            <UsuarioTable
-              usuarios={usuarios}
-              cargando={cargandoUsuarios}
-              onEditar={(u) => setEditando(u)}
-              onDesactivar={handleDesactivar}
-              onVenderPlan={(u) => setModalSuscripcion(u)}
-            />
-          </section>
-        )}
+        <div className="sidebar-footer">
+          <div className="admin-profile">
+            <div className="admin-avatar">A</div>
+            <div className="admin-info">
+              <span className="admin-name">Administrador</span>
+              <span className="admin-status">● En línea</span>
+            </div>
+          </div>
+        </div>
+      </aside>
 
-        {seccion === "planes" && (
-          <section className="section-animate" key="planes">
-            <PlanForm
-              onSubmit={handleCrearPlan}
-              editando={null}
-              onCancelar={() => {}}
-            />
-            <PlanTable
-              planes={planes}
-              cargando={cargandoPlanes}
-              onToggleActivo={handleTogglePlan}
-            />
-          </section>
-        )}
+      {/* --- Área de Contenido Principal --- */}
+      <div className="main-content">
+        <header className="content-header">
+          <div className="header-title-area">
+            <span className="section-category">GymMax Panel</span>
+            <h1 className="section-title">
+              {seccion === "usuarios" && "Clientes & Suscripciones"}
+              {seccion === "planes" && "Catálogo de Planes"}
+              {seccion === "recepcion" && "Control de Accesos (QR)"}
+              {seccion === "finanzas" && "Historial Financiero"}
+            </h1>
+          </div>
+          <div className="header-actions-area">
+            <div className="date-display" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
+              <CalendarIcon size={16} color="#3b82f6" />
+              <span style={{ textTransform: "capitalize" }}>
+                {new Date().toLocaleDateString("es-CO", { weekday: 'long', day: 'numeric', month: 'short' })}
+              </span>
+            </div>
+          </div>
+        </header>
 
-        {seccion === "recepcion" && (
-          <section className="section-animate" key="recepcion">
-            <AsistenciaScanner 
-              usuarios={usuarios} 
-              mostrarToast={mostrarToast} 
-            />
-          </section>
-        )}
+        <main className="content-body">
+          {seccion === "usuarios" && (
+            <section className="section-animate" key="usuarios">
+              <UsuarioForm
+                onSubmit={editando ? handleActualizarUsuario : handleCrearUsuario}
+                editando={editando}
+                onCancelar={() => setEditando(null)}
+                planes={planes.filter(p => p.activo)} // solo planes activos
+              />
+              <UsuarioTable
+                usuarios={usuarios}
+                cargando={cargandoUsuarios}
+                onEditar={(u) => setEditando(u)}
+                onDesactivar={handleDesactivar}
+                onVenderPlan={(u) => setModalSuscripcion(u)}
+              />
+            </section>
+          )}
 
-        {seccion === "finanzas" && (
-          <section className="section-animate" key="finanzas">
-            <PagosHistorico
-              pagos={pagos}
-              cargando={cargandoPagos}
-            />
-          </section>
-        )}
-      </main>
+          {seccion === "planes" && (
+            <section className="section-animate" key="planes">
+              <PlanForm
+                onSubmit={handleCrearPlan}
+                editando={null}
+                onCancelar={() => {}}
+              />
+              <PlanTable
+                planes={planes}
+                cargando={cargandoPlanes}
+                onToggleActivo={handleTogglePlan}
+              />
+            </section>
+          )}
+
+          {seccion === "recepcion" && (
+            <section className="section-animate" key="recepcion">
+              <AsistenciaScanner 
+                usuarios={usuarios} 
+                mostrarToast={mostrarToast} 
+              />
+            </section>
+          )}
+
+          {seccion === "finanzas" && (
+            <section className="section-animate" key="finanzas">
+              <PagosHistorico
+                pagos={pagos}
+                cargando={cargandoPagos}
+              />
+            </section>
+          )}
+        </main>
+      </div>
 
       {modalSuscripcion && (
         <SuscripcionModal

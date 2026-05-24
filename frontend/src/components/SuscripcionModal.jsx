@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { WalletIcon, CloseIcon } from "./Icons";
 import "./SuscripcionModal.css";
 
 export default function SuscripcionModal({ usuario, planes, onClose, onSubmit }) {
@@ -44,8 +45,15 @@ export default function SuscripcionModal({ usuario, planes, onClose, onSubmit })
     <div className="modal-overlay" onClick={onClose} id="suscripcion-modal">
       <div className="modal-content glass-panel" onClick={handleContentClick}>
         <div className="modal-header">
-          <h2>💰 Registrar Venta de Plan</h2>
-          <button className="btn-close" onClick={onClose}>×</button>
+          <h2>
+            <span style={{ display: "inline-flex", alignItems: "center", marginRight: "6px" }}>
+              <WalletIcon size={22} color="var(--primary-color)" />
+            </span>
+            Registrar Venta de Plan
+          </h2>
+          <button className="btn-close" onClick={onClose} style={{ display: "inline-flex", alignItems: "center" }}>
+            <CloseIcon size={20} />
+          </button>
         </div>
         
         <div className="modal-body">
@@ -85,8 +93,8 @@ export default function SuscripcionModal({ usuario, planes, onClose, onSubmit })
                     onChange={(e) => setMetodoPago(e.target.value)}
                     required
                   >
-                    <option value="Efectivo">💵 Efectivo</option>
-                    <option value="Nequi">📱 Nequi</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Nequi">Nequi</option>
                   </select>
                 </div>
 

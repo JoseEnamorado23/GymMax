@@ -1,29 +1,49 @@
 .plan-form {
-  padding: 2rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: 2.25rem;
   margin-bottom: 2rem;
-  animation: slideDown 0.5s ease-out forwards;
+  animation: slideDown 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: var(--transition-normal);
+}
+
+.plan-form:hover {
+  box-shadow: var(--shadow-premium);
 }
 
 .plan-form h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 1.75rem;
+  color: var(--text-primary);
+  position: relative;
+  display: inline-block;
+}
+
+.plan-form h2::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 32px;
+  height: 4px;
+  background-color: var(--accent-color);
+  border-radius: 9999px;
 }
 
 .plan-form .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .plan-form .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.55rem;
 }
 
 .plan-form .form-group-full {
@@ -31,39 +51,40 @@
 }
 
 .plan-form .form-group label {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   color: var(--text-secondary);
 }
 
 .plan-form .form-group input,
 .plan-form .form-group textarea {
-  padding: 0.75rem 1rem;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: rgba(15, 23, 42, 0.6);
+  padding: 0.8rem 1.1rem;
+  border-radius: var(--radius-input);
+  border: 1.5px solid var(--border-color);
+  background-color: #f8fafc;
   color: var(--text-primary);
   font-size: 0.95rem;
   font-family: inherit;
-  transition: all 0.3s ease;
+  transition: var(--transition-fast);
   outline: none;
   resize: vertical;
 }
 
 .plan-form .form-group input::placeholder,
 .plan-form .form-group textarea::placeholder {
-  color: rgba(148, 163, 184, 0.5);
+  color: #94a3b8;
 }
 
 .plan-form .form-group input:focus,
 .plan-form .form-group textarea:focus {
-  border-color: #f59e0b;
-  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+  border-color: var(--accent-hover);
+  background-color: var(--surface-color);
+  box-shadow: 0 0 0 3px rgba(163, 230, 53, 0.22);
 }
 
-/* Remove number input spinners for cleaner look */
+/* Ocultar flechas del input number para diseño limpio */
 .plan-form input[type="number"]::-webkit-outer-spin-button,
 .plan-form input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -75,6 +96,12 @@
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-15px); }
+  from { opacity: 0; transform: translateY(-12px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 576px) {
+  .plan-form {
+    padding: 1.5rem;
+  }
 }

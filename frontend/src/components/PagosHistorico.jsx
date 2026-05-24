@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { WalletIcon, CashIcon, MobileIcon, SearchIcon, ClipboardIcon } from "./Icons";
 import "./PagosHistorico.css";
 
 export default function PagosHistorico({ pagos, cargando }) {
@@ -23,7 +24,9 @@ export default function PagosHistorico({ pagos, cargando }) {
       {/* --- Resumen Financiero (KPIs) --- */}
       <div className="finanzas-kpis">
         <div className="kpi-card total-kpi">
-          <div className="kpi-icon">💰</div>
+          <div className="kpi-icon" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+            <WalletIcon size={28} color="var(--accent-hover)" />
+          </div>
           <div className="kpi-details">
             <h3>Ingresos Totales</h3>
             <p className="kpi-val">${totalIngresos.toLocaleString("es-CO")}</p>
@@ -32,7 +35,9 @@ export default function PagosHistorico({ pagos, cargando }) {
         </div>
 
         <div className="kpi-card efectivo-kpi">
-          <div className="kpi-icon">💵</div>
+          <div className="kpi-icon" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+            <CashIcon size={28} color="#10b981" />
+          </div>
           <div className="kpi-details">
             <h3>Efectivo</h3>
             <p className="kpi-val">${ingresosEfectivo.toLocaleString("es-CO")}</p>
@@ -41,7 +46,9 @@ export default function PagosHistorico({ pagos, cargando }) {
         </div>
 
         <div className="kpi-card nequi-kpi">
-          <div className="kpi-icon">📱</div>
+          <div className="kpi-icon" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+            <MobileIcon size={28} color="#da0077" />
+          </div>
           <div className="kpi-details">
             <h3>Nequi</h3>
             <p className="kpi-val">${ingresosNequi.toLocaleString("es-CO")}</p>
@@ -53,7 +60,9 @@ export default function PagosHistorico({ pagos, cargando }) {
       {/* --- Controles de Filtros --- */}
       <div className="finanzas-header-actions glass-panel">
         <div className="search-box">
-          <span className="search-icon">🔍</span>
+          <span className="search-icon" style={{ display: "inline-flex", alignItems: "center" }}>
+            <SearchIcon size={16} />
+          </span>
           <input
             type="text"
             placeholder="Buscar por cliente o documento..."
@@ -70,8 +79,8 @@ export default function PagosHistorico({ pagos, cargando }) {
             onChange={(e) => setMetodoFiltro(e.target.value)}
           >
             <option value="Todos">Todos los métodos</option>
-            <option value="Efectivo">💵 Efectivo</option>
-            <option value="Nequi">📱 Nequi</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Nequi">Nequi</option>
           </select>
         </div>
       </div>
@@ -82,7 +91,9 @@ export default function PagosHistorico({ pagos, cargando }) {
           <div className="cargando-tabla">Cargando transacciones financieras...</div>
         ) : pagosFiltrados.length === 0 ? (
           <div className="no-data-tabla">
-            <span className="no-data-icon">🧾</span>
+            <span className="no-data-icon" style={{ display: "inline-flex", justifyContent: "center", width: "100%", marginBottom: "1rem" }}>
+              <ClipboardIcon size={48} />
+            </span>
             <p>No se encontraron registros de pagos con los filtros actuales.</p>
           </div>
         ) : (
@@ -123,7 +134,15 @@ export default function PagosHistorico({ pagos, cargando }) {
                     <td className="duration-cell">{pago.plan?.duracion_dias || 0} días</td>
                     <td>
                       <span className={`metodo-badge ${pago.metodo_pago === "Nequi" ? "badge-nequi" : "badge-efectivo"}`}>
-                        {pago.metodo_pago === "Nequi" ? "📱 Nequi" : "💵 Efectivo"}
+                        {pago.metodo_pago === "Nequi" ? (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                            <MobileIcon size={12} color="#9d174d" /> Nequi
+                          </span>
+                        ) : (
+                          <span style={{ display: "inline-flex", alignItems: "center", gap: "6px" }}>
+                            <CashIcon size={12} color="#065f46" /> Efectivo
+                          </span>
+                        )}
                       </span>
                     </td>
                     <td className="text-right amount-cell">

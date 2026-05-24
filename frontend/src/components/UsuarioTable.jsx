@@ -1,3 +1,4 @@
+import { UsersIcon, CartIcon, EditIcon, DeactivateIcon, WhatsAppIcon } from "./Icons";
 import "./UsuarioTable.css";
 
 export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVenderPlan, cargando }) {
@@ -16,7 +17,9 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
     return (
       <div className="table-container glass-panel">
         <div className="empty-state">
-          <span className="empty-icon">👥</span>
+          <span className="empty-icon">
+            <UsersIcon size={48} />
+          </span>
           <h3>Sin usuarios registrados</h3>
           <p>Usa el formulario de arriba para registrar tu primer usuario.</p>
         </div>
@@ -78,7 +81,10 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
                       rel="noopener noreferrer"
                       style={{ fontSize: "0.8rem", color: "#25D366", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px", marginTop: "4px" }}
                     >
-                      <span role="img" aria-label="whatsapp">💬</span> WhatsApp
+                      <span style={{ display: "inline-flex", alignItems: "center", marginRight: "4px" }}>
+                        <WhatsAppIcon size={14} color="#25D366" />
+                      </span>{" "}
+                      WhatsApp
                     </a>
                   )}
                 </td>
@@ -102,21 +108,26 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
                     className="btn-icon btn-sell"
                     onClick={() => onVenderPlan(u)}
                     title="Vender Plan"
-                    style={{ background: "rgba(16, 185, 129, 0.1)", borderColor: "#10b981" }}
-                  >🛒</button>
+                  >
+                    <CartIcon size={16} color="#10b981" />
+                  </button>
                   <button
                     className="btn-icon btn-edit"
                     onClick={() => onEditar(u)}
                     title="Editar"
                     id={`btn-edit-${u.id}`}
-                  >✏️</button>
+                  >
+                    <EditIcon size={16} color="#2563eb" />
+                  </button>
                   {u.activo && (
                     <button
                       className="btn-icon btn-deactivate"
                       onClick={() => onDesactivar(u.id)}
                       title="Desactivar"
                       id={`btn-deactivate-${u.id}`}
-                    >🚫</button>
+                    >
+                      <DeactivateIcon size={16} color="#dc2626" />
+                    </button>
                   )}
                 </td>
               </tr>
