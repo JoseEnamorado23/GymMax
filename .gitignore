@@ -1,0 +1,15 @@
+# Entornos de Python
+backend/venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node.js
+frontend/node_modules/
+frontend/dist/
+frontend/.eslintcache
+
+# Bases de datos y Entorno
+.env
+pgdata/

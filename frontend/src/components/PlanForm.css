@@ -1,0 +1,80 @@
+.plan-form {
+  padding: 2rem;
+  margin-bottom: 2rem;
+  animation: slideDown 0.5s ease-out forwards;
+}
+
+.plan-form h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.plan-form .form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.plan-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.plan-form .form-group-full {
+  grid-column: 1 / -1;
+}
+
+.plan-form .form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.plan-form .form-group input,
+.plan-form .form-group textarea {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: rgba(15, 23, 42, 0.6);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  outline: none;
+  resize: vertical;
+}
+
+.plan-form .form-group input::placeholder,
+.plan-form .form-group textarea::placeholder {
+  color: rgba(148, 163, 184, 0.5);
+}
+
+.plan-form .form-group input:focus,
+.plan-form .form-group textarea:focus {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+}
+
+/* Remove number input spinners for cleaner look */
+.plan-form input[type="number"]::-webkit-outer-spin-button,
+.plan-form input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.plan-form input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
