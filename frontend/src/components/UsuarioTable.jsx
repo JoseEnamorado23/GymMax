@@ -49,9 +49,39 @@ export default function UsuarioTable({ usuarios, onEditar, onDesactivar, onVende
           <tbody>
             {usuarios.map((u, i) => (
               <tr key={u.id} className="table-row" style={{ animationDelay: `${i * 0.05}s` }}>
-                <td className="td-name">{u.nombre_completo}</td>
+                <td className="td-name">
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                    {u.foto_perfil ? (
+                      <img 
+                        src={u.foto_perfil} 
+                        alt={u.nombre_completo} 
+                        style={{ width: "40px", height: "40px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--primary-color)" }}
+                        onError={(e) => { e.target.onerror = null; e.target.src = "https://ui-avatars.com/api/?name=" + encodeURIComponent(u.nombre_completo) + "&background=random"; }}
+                      />
+                    ) : (
+                      <img 
+                        src={"https://ui-avatars.com/api/?name=" + encodeURIComponent(u.nombre_completo) + "&background=random"} 
+                        alt={u.nombre_completo} 
+                        style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                      />
+                    )}
+                    {u.nombre_completo}
+                  </div>
+                </td>
                 <td><code>{u.documento_identidad}</code></td>
-                <td>{u.telefono}</td>
+                <td>
+                  <div>{u.telefono}</div>
+                  {u.contacto_whatsapp && (
+                    <a 
+                      href={`https://wa.me/${u.contacto_whatsapp.replace(/\D/g,'')}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      style={{ fontSize: "0.8rem", color: "#25D366", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "4px", marginTop: "4px" }}
+                    >
+                      <span role="img" aria-label="whatsapp">💬</span> WhatsApp
+                    </a>
+                  )}
+                </td>
                 <td>
                   {u.plan ? (
                     <span className="badge badge-amber" style={{fontSize: "0.75rem", padding: "0.2rem 0.6rem"}}>{u.plan.nombre}</span>

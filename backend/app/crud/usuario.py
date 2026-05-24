@@ -10,6 +10,8 @@ def crear_usuario(db: Session, usuario: UsuarioCreate) -> Usuario:
         nombre_completo=usuario.nombre_completo,
         documento_identidad=usuario.documento_identidad,
         telefono=usuario.telefono,
+        foto_perfil=usuario.foto_perfil,
+        contacto_whatsapp=usuario.contacto_whatsapp,
         plan_id=usuario.plan_id,
     )
     db.add(db_usuario)

@@ -11,5 +11,6 @@ class Plan(Base):
     nombre = Column(String, index=True, nullable=False)
     descripcion = Column(String, nullable=True)
     precio = Column(Float, nullable=False)
+    precio_especial = Column(Float, nullable=True)
     duracion_dias = Column(Integer, nullable=False)  # Ej: 30 para mensualidad
     activo = Column(Boolean, default=True)

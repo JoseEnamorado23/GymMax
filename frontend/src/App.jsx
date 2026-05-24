@@ -13,6 +13,7 @@ import {
   desactivarUsuario,
   fetchPlanes,
   crearPlan,
+  togglePlanActivo,
   crearSuscripcion,
 } from "./services/api";
 import "./App.css";
@@ -51,7 +52,7 @@ function App() {
   const cargarPlanes = useCallback(async () => {
     try {
       setCargandoPlanes(true);
-      const data = await fetchPlanes();
+      const data = await fetchPlanes(true); // traemos todos (activos e inactivos)
       setPlanes(data);
     } catch (err) {
       mostrarToast(err.message, "error");
@@ -106,6 +107,16 @@ function App() {
     try {
       await crearPlan(data);
       mostrarToast("Plan creado exitosamente");
+      cargarPlanes();
+    } catch (err) {
+      mostrarToast(err.message, "error");
+    }
+  }
+
+  async function handleTogglePlan(id) {
+    try {
+      await togglePlanActivo(id);
+      mostrarToast("Estado del plan actualizado");
       cargarPlanes();
     } catch (err) {
       mostrarToast(err.message, "error");
@@ -170,7 +181,7 @@ function App() {
               onSubmit={editando ? handleActualizarUsuario : handleCrearUsuario}
               editando={editando}
               onCancelar={() => setEditando(null)}
-              planes={planes}
+              planes={planes.filter(p => p.activo)} // solo planes activos
             />
             <UsuarioTable
               usuarios={usuarios}
@@ -192,6 +203,7 @@ function App() {
             <PlanTable
               planes={planes}
               cargando={cargandoPlanes}
+              onToggleActivo={handleTogglePlan}
             />
           </section>
         )}
@@ -209,7 +221,7 @@ function App() {
       {modalSuscripcion && (
         <SuscripcionModal
           usuario={modalSuscripcion}
-          planes={planes}
+          planes={planes.filter(p => p.activo)} // solo planes activos
           onClose={() => setModalSuscripcion(null)}
           onSubmit={handleVenderPlan}
         />

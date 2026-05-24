@@ -5,6 +5,8 @@ const emptyForm = {
   nombre_completo: "",
   documento_identidad: "",
   telefono: "",
+  foto_perfil: "",
+  contacto_whatsapp: "",
   plan_id: "",
 };
 
@@ -17,6 +19,8 @@ export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) 
         nombre_completo: editando.nombre_completo,
         documento_identidad: editando.documento_identidad,
         telefono: editando.telefono,
+        foto_perfil: editando.foto_perfil || "",
+        contacto_whatsapp: editando.contacto_whatsapp || "",
         plan_id: editando.plan_id || "",
       });
     } else {
@@ -78,6 +82,30 @@ export default function UsuarioForm({ onSubmit, editando, onCancelar, planes }) 
             value={form.telefono}
             onChange={handleChange}
             required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="contacto_whatsapp">WhatsApp (Opcional)</label>
+          <input
+            type="text"
+            id="contacto_whatsapp"
+            name="contacto_whatsapp"
+            placeholder="Ej: 300 123 4567"
+            value={form.contacto_whatsapp}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="foto_perfil">URL Foto de Perfil (Opcional)</label>
+          <input
+            type="url"
+            id="foto_perfil"
+            name="foto_perfil"
+            placeholder="Ej: https://ejemplo.com/foto.jpg"
+            value={form.foto_perfil}
+            onChange={handleChange}
           />
         </div>
 

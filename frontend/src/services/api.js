@@ -42,8 +42,9 @@ export async function desactivarUsuario(id) {
 
 // --- Planes ---
 
-export async function fetchPlanes() {
-  const res = await fetch(`${API_BASE}/planes/`);
+export async function fetchPlanes(incluirInactivos = false) {
+  const url = incluirInactivos ? `${API_BASE}/planes/?incluir_inactivos=true` : `${API_BASE}/planes/`;
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Error al obtener planes");
   return res.json();
 }
@@ -57,6 +58,17 @@ export async function crearPlan(data) {
   if (!res.ok) {
     const error = await res.json();
     throw new Error(error.detail || "Error al crear plan");
+  }
+  return res.json();
+}
+
+export async function togglePlanActivo(id) {
+  const res = await fetch(`${API_BASE}/planes/${id}/toggle_activo`, {
+    method: "PUT",
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.detail || "Error al cambiar estado del plan");
   }
   return res.json();
 }
@@ -90,3 +102,10 @@ export async function marcarAsistencia(data) {
   }
   return res.json();
 }
+
+export async function fetchAsistencias() {
+  const res = await fetch(`${API_BASE}/asistencias/`);
+  if (!res.ok) throw new Error("Error al obtener el historial de asistencias");
+  return res.json();
+}
+

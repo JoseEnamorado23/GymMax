@@ -34,3 +34,7 @@ def registrar_ingreso(db: Session, asistencia: AsistenciaCreate):
         "fecha_hora": db_asistencia.fecha_hora,
         "mensaje": "Acceso Permitido ✅"
     }
+
+
+def obtener_asistencias(db: Session, limit: int = 50, skip: int = 0):
+    return db.query(Asistencia).order_by(Asistencia.fecha_hora.desc()).offset(skip).limit(limit).all()

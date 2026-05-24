@@ -13,6 +13,8 @@ class Usuario(Base):
     nombre_completo = Column(String, index=True, nullable=False)
     documento_identidad = Column(String, unique=True, index=True, nullable=False)
     telefono = Column(String, nullable=False)
+    foto_perfil = Column(String, nullable=True)
+    contacto_whatsapp = Column(String, nullable=True)
     plan_id = Column(UUID(as_uuid=True), ForeignKey("planes.id"), nullable=True)
     fecha_registro = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     activo = Column(Boolean, default=True)

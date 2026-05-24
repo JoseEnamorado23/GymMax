@@ -5,6 +5,7 @@ const emptyForm = {
   nombre: "",
   descripcion: "",
   precio: "",
+  precio_especial: "",
   duracion_dias: "",
 };
 
@@ -17,6 +18,7 @@ export default function PlanForm({ onSubmit, editando, onCancelar }) {
         nombre: editando.nombre,
         descripcion: editando.descripcion || "",
         precio: editando.precio,
+        precio_especial: editando.precio_especial || "",
         duracion_dias: editando.duracion_dias,
       });
     } else {
@@ -34,6 +36,7 @@ export default function PlanForm({ onSubmit, editando, onCancelar }) {
     onSubmit({
       ...form,
       precio: parseFloat(form.precio),
+      precio_especial: form.precio_especial ? parseFloat(form.precio_especial) : null,
       duracion_dias: parseInt(form.duracion_dias, 10),
       descripcion: form.descripcion || null,
     });
@@ -59,7 +62,7 @@ export default function PlanForm({ onSubmit, editando, onCancelar }) {
         </div>
 
         <div className="form-group">
-          <label htmlFor="plan-precio">Precio ($)</label>
+          <label htmlFor="plan-precio">Precio Normal ($)</label>
           <input
             type="number"
             id="plan-precio"
@@ -70,6 +73,20 @@ export default function PlanForm({ onSubmit, editando, onCancelar }) {
             min="0"
             step="any"
             required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="plan-precio-especial">Precio Especial ($)</label>
+          <input
+            type="number"
+            id="plan-precio-especial"
+            name="precio_especial"
+            placeholder="Opcional (Ej: 60000)"
+            value={form.precio_especial}
+            onChange={handleChange}
+            min="0"
+            step="any"
           />
         </div>
 

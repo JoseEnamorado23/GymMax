@@ -10,6 +10,8 @@ class UsuarioCreate(BaseModel):
     nombre_completo: str
     documento_identidad: str
     telefono: str
+    foto_perfil: Optional[str] = None
+    contacto_whatsapp: Optional[str] = None
     plan_id: Optional[UUID] = None
 
 
@@ -18,6 +20,8 @@ class UsuarioUpdate(BaseModel):
     nombre_completo: Optional[str] = None
     documento_identidad: Optional[str] = None
     telefono: Optional[str] = None
+    foto_perfil: Optional[str] = None
+    contacto_whatsapp: Optional[str] = None
     plan_id: Optional[UUID] = None
     activo: Optional[bool] = None
 
@@ -28,6 +32,8 @@ class UsuarioResponse(BaseModel):
     nombre_completo: str
     documento_identidad: str
     telefono: str
+    foto_perfil: Optional[str] = None
+    contacto_whatsapp: Optional[str] = None
     plan_id: Optional[UUID]
     plan: Optional[PlanResponse] = None
     fecha_registro: datetime

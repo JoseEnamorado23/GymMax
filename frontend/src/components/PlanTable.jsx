@@ -1,6 +1,6 @@
 import "./PlanTable.css";
 
-export default function PlanTable({ planes, cargando }) {
+export default function PlanTable({ planes, cargando, onToggleActivo }) {
   if (cargando) {
     return (
       <div className="table-container glass-panel">
@@ -71,7 +71,18 @@ export default function PlanTable({ planes, cargando }) {
             <div className="plan-details">
               <div className="plan-detail">
                 <span className="detail-label">Precio</span>
-                <span className="detail-value detail-precio">{formatPrecio(plan.precio)}</span>
+                {plan.precio_especial ? (
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+                    <span style={{ textDecoration: "line-through", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                      {formatPrecio(plan.precio)}
+                    </span>
+                    <span className="detail-value detail-precio" style={{ color: "var(--primary-color)" }}>
+                      {formatPrecio(plan.precio_especial)}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="detail-value detail-precio">{formatPrecio(plan.precio)}</span>
+                )}
               </div>
               <div className="plan-detail">
                 <span className="detail-label">Duración</span>
@@ -79,10 +90,18 @@ export default function PlanTable({ planes, cargando }) {
               </div>
             </div>
 
-            <div className="plan-status">
+            <div className="plan-status" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span className={`status-badge ${plan.activo ? "active" : "inactive"}`}>
                 {plan.activo ? "Activo" : "Inactivo"}
               </span>
+              <button 
+                className="btn-icon" 
+                onClick={() => onToggleActivo(plan.id)}
+                title={plan.activo ? "Desactivar Plan" : "Activar Plan"}
+                style={{ background: "rgba(255,255,255,0.1)", color: "var(--text-primary)" }}
+              >
+                {plan.activo ? "🚫" : "✅"}
+              </button>
             </div>
           </div>
         ))}
