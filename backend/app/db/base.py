@@ -4,3 +4,5 @@ from app.models.usuario import Usuario
 from app.models.plan import Plan
 from app.models.suscripcion import Suscripcion
 from app.models.asistencia import Asistencia
+from app.models.pago import Pago
+

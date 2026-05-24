@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.db.database import engine, Base
-from app.api import usuarios, planes, suscripciones, asistencias
+from app.api import usuarios, planes, suscripciones, asistencias, pagos
 
 # Crea las tablas en la DB al iniciar (en producción usarías Alembic)
 Base.metadata.create_all(bind=engine)
@@ -33,3 +33,5 @@ app.include_router(usuarios.router, prefix="/api/v1/usuarios", tags=["Usuarios"]
 app.include_router(planes.router, prefix="/api/v1/planes", tags=["Planes"])
 app.include_router(suscripciones.router, prefix="/api/v1/suscripciones", tags=["Suscripciones"])
 app.include_router(asistencias.router, prefix="/api/v1/asistencias", tags=["Asistencias"])
+app.include_router(pagos.router, prefix="/api/v1/pagos", tags=["Pagos"])
+

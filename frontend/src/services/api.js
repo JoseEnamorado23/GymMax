@@ -109,3 +109,10 @@ export async function fetchAsistencias() {
   return res.json();
 }
 
+export async function fetchPagos() {
+  const res = await fetch(`${API_BASE}/pagos/`);
+  if (!res.ok) throw new Error("Error al obtener el historial de pagos");
+  return res.json();
+}
+
+

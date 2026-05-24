@@ -6,6 +6,7 @@ import PlanTable from "./components/PlanTable";
 import SuscripcionModal from "./components/SuscripcionModal";
 import AsistenciaScanner from "./components/AsistenciaScanner";
 import Toast from "./components/Toast";
+import PagosHistorico from "./components/PagosHistorico";
 import {
   fetchUsuarios,
   crearUsuario,
@@ -15,6 +16,7 @@ import {
   crearPlan,
   togglePlanActivo,
   crearSuscripcion,
+  fetchPagos,
 } from "./services/api";
 import "./App.css";
 
@@ -35,6 +37,10 @@ function App() {
 
   // --- Suscripciones ---
   const [modalSuscripcion, setModalSuscripcion] = useState(null);
+
+  // --- Estado Pagos ---
+  const [pagos, setPagos] = useState([]);
+  const [cargandoPagos, setCargandoPagos] = useState(true);
 
   // --- Cargar datos ---
   const cargarUsuarios = useCallback(async () => {
@@ -61,10 +67,23 @@ function App() {
     }
   }, []);
 
+  const cargarPagos = useCallback(async () => {
+    try {
+      setCargandoPagos(true);
+      const data = await fetchPagos();
+      setPagos(data);
+    } catch (err) {
+      mostrarToast(err.message, "error");
+    } finally {
+      setCargandoPagos(false);
+    }
+  }, []);
+
   useEffect(() => {
     cargarUsuarios();
     cargarPlanes();
-  }, [cargarUsuarios, cargarPlanes]);
+    cargarPagos();
+  }, [cargarUsuarios, cargarPlanes, cargarPagos]);
 
   function mostrarToast(mensaje, tipo = "success") {
     setToast({ mensaje, tipo });
@@ -130,6 +149,7 @@ function App() {
       mostrarToast("Plan vendido y activado exitosamente");
       setModalSuscripcion(null);
       cargarUsuarios(); // Recargar usuarios para ver el plan actualizado en la tabla
+      cargarPagos(); // Recargar pagos para reflejar la venta en el historial
     } catch (err) {
       mostrarToast(err.message, "error");
     }
@@ -170,6 +190,14 @@ function App() {
         >
           <span className="tab-icon">📷</span>
           Recepción (QR)
+        </button>
+        <button
+          className={`tab-btn ${seccion === "finanzas" ? "tab-active" : ""}`}
+          onClick={() => setSeccion("finanzas")}
+          id="tab-finanzas"
+        >
+          <span className="tab-icon">💰</span>
+          Finanzas
         </button>
       </nav>
 
@@ -213,6 +241,15 @@ function App() {
             <AsistenciaScanner 
               usuarios={usuarios} 
               mostrarToast={mostrarToast} 
+            />
+          </section>
+        )}
+
+        {seccion === "finanzas" && (
+          <section className="section-animate" key="finanzas">
+            <PagosHistorico
+              pagos={pagos}
+              cargando={cargandoPagos}
             />
           </section>
         )}

@@ -15,7 +15,7 @@ def crear_suscripcion(db: Session, suscripcion: SuscripcionCreate):
     fecha_inicio_calc = datetime.now(timezone.utc)
     fecha_fin_calc = fecha_inicio_calc + timedelta(days=plan.duracion_dias)
 
-    # 3. Crear el registro
+    # 3. Crear el registro de Suscripcion
     db_suscripcion = Suscripcion(
         usuario_id=suscripcion.usuario_id,
         plan_id=suscripcion.plan_id,
@@ -23,14 +23,32 @@ def crear_suscripcion(db: Session, suscripcion: SuscripcionCreate):
         fecha_fin=fecha_fin_calc,
         estado="Activa"
     )
+    db.add(db_suscripcion)
+    db.flush() # flush para obtener el id de db_suscripcion para el pago
+
+    # 4. Determinar el monto del pago
+    monto_pago = suscripcion.monto
+    if monto_pago is None:
+        monto_pago = plan.precio_especial if plan.precio_especial is not None else plan.precio
+
+    # 5. Crear el registro de Pago asociado
+    from app.models.pago import Pago
+    db_pago = Pago(
+        usuario_id=suscripcion.usuario_id,
+        suscripcion_id=db_suscripcion.id,
+        plan_id=suscripcion.plan_id,
+        monto=monto_pago,
+        metodo_pago=suscripcion.metodo_pago
+    )
+    db.add(db_pago)
     
-    # 4. Actualizar el plan actual en el registro del usuario
+    # 6. Actualizar el plan actual en el registro del usuario
     from app.models.usuario import Usuario
     usuario = db.query(Usuario).filter(Usuario.id == suscripcion.usuario_id).first()
     if usuario:
         usuario.plan_id = suscripcion.plan_id
 
-    db.add(db_suscripcion)
     db.commit()
     db.refresh(db_suscripcion)
     return db_suscripcion
+
